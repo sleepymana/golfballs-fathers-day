@@ -86,7 +86,23 @@
     ["vip-speed-personalization", "VIP speed personalization"],
   ];
 
+  const BLANK_ANGLES = [
+    ["best-dad-grandad", "Best dad / grandad"],
+    ["hard-to-buy-for", "Hard to buy for"],
+    ["last-minute-luxury", "Last-minute luxury"],
+    ["tournament-branding", "Tournament branding"],
+    ["vip-speed-personalization", "VIP speed personalization"],
+  ];
+
   const SECTIONS = [
+    {
+      title: "Blanks for Alberto (balls removed)",
+      subtitle: "Image-to-image edits of #10–14 with golf balls removed. Ready for Alberto to composite real product photos onto the right-hand panel.",
+      items: BLANK_ANGLES.map(([slug, label]) => ({
+        file: `blanks/${slug}__us-vs-them-negative_NO-BALLS_9x16.png`,
+        angle: label,
+      })),
+    },
     {
       title: "Us vs Them — Positive",
       subtitle: "Side-by-side framing where 'us' (golfballs) is the winning side.",
