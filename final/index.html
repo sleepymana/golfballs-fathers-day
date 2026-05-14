@@ -266,12 +266,24 @@ And he loves it.`,
         { remote: true, url: "https://papaya-narwhal-f54b5d.netlify.app/010_last-minute-luxury__ugc-whiteboard-villain_9x16_4x5.png?v=1778632499" },
       ],
     },
+    {
+      title: "Previous \"designer\" ads — blanks for Alberto",
+      subtitle: "Golf balls removed via image-to-image edit. Clean canvas for Alberto to composite real product photos. Copy below matches the original #10–14.",
+      remote: true,
+      items: [
+        { remote: true, url: "../blanks/005_last-minute-luxury__annotated-lifestyle_9x16_4x5_NO-BALLS.png", label: "005_last-minute-luxury__annotated-lifestyle_9x16_4x5.png" },
+        { remote: true, url: "../blanks/033_hard-to-buy-for__studio-product-hero_9x16_4x5_NO-BALLS.png", label: "033_hard-to-buy-for__studio-product-hero_9x16_4x5.png" },
+        { remote: true, url: "../blanks/129_best-dad-grandad__studio-product-hero_9x16_4x5_NO-BALLS.png", label: "129_best-dad-grandad__studio-product-hero_9x16_4x5.png" },
+        { remote: true, url: "../blanks/132_best-dad-grandad__specific-pain-point_9x16_4x5_NO-BALLS.png", label: "132_best-dad-grandad__specific-pain-point_9x16_4x5.png" },
+        { remote: true, url: "../blanks/133_best-dad-grandad__annotated-lifestyle_9x16_4x5_NO-BALLS.png", label: "133_best-dad-grandad__annotated-lifestyle_9x16_4x5.png" },
+      ],
+    },
   ];
 
   function resolve(item, sectionRemote) {
-    if (typeof item === "string") return { path: item, remote: sectionRemote, note: null };
-    if (item.url) return { path: item.url, remote: item.remote, note: item.note || null };
-    return { path: item.path, remote: sectionRemote, note: item.note || null };
+    if (typeof item === "string") return { path: item, remote: sectionRemote, note: null, label: null };
+    if (item.url) return { path: item.url, remote: item.remote, note: item.note || null, label: item.label || null };
+    return { path: item.path, remote: sectionRemote, note: item.note || null, label: item.label || null };
   }
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]);
@@ -299,9 +311,9 @@ And he loves it.`,
       for (const rawItem of section.items) {
         n++;
         const num = n;
-        const { path: item, remote, note } = resolve(rawItem, section.remote);
+        const { path: item, remote, note, label: overrideLabel } = resolve(rawItem, section.remote);
         const src = remote ? item : "../images/" + item.split("/").pop();
-        const label = item.split("/").pop().split("?")[0];
+        const label = overrideLabel || item.split("/").pop().split("?")[0];
         const copy = COPY[label] || { primary_text: "", headline: "" };
 
         const card = document.createElement("div");
