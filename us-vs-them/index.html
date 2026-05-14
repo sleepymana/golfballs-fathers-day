@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Golfballs — Us vs Them candidates</title>
+<style>
+  :root {
+    --bg: #0e0f12;
+    --panel: #16181d;
+    --panel-2: #1c1f26;
+    --border: #2a2e38;
+    --text: #e7e9ee;
+    --muted: #8a93a4;
+    --accent: #6ee7b7;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(14,15,18,0.92);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 22px;
+    display: flex; gap: 14px; align-items: baseline; flex-wrap: wrap;
+  }
+  h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: 0.2px; }
+  h1 small { color: var(--muted); font-weight: 400; margin-left: 8px; }
+  header a { color: var(--accent); font-size: 12px; text-decoration: none; margin-left: auto; }
+  header a:hover { text-decoration: underline; }
+  main { padding: 22px; }
+  .section-header { margin: 8px 0 18px; }
+  .section-header:not(:first-child) { margin-top: 44px; }
+  .section-title { font-size: 26px; color: var(--text); letter-spacing: -0.2px; font-weight: 700; margin: 0 0 6px; }
+  .section-title .count { color: var(--muted); font-weight: 400; font-size: 14px; margin-left: 10px; letter-spacing: 0; }
+  .section-subtitle { font-size: 15px; color: var(--muted); line-height: 1.5; margin: 0; max-width: 760px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .card .num {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.78); color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 13px; font-weight: 700;
+    padding: 4px 9px; border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+  }
+  .card img { width: 100%; height: auto; display: block; background: #000; cursor: zoom-in; }
+  .meta {
+    padding: 10px 12px 14px;
+    font-size: 11px; color: var(--muted);
+    word-break: break-all; line-height: 1.4;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  .meta b { color: var(--text); font-weight: 600; font-family: inherit; }
+  dialog.lightbox { border: none; padding: 0; background: rgba(0,0,0,0.92); max-width: 96vw; max-height: 96vh; }
+  dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
+  dialog.lightbox img { max-width: 92vw; max-height: 92vh; display: block; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Golfballs — Us vs Them candidates <small>find Alberto's pick</small></h1>
+  <a href="../">← back to approved gallery</a>
+</header>
+<main id="main"></main>
+<dialog class="lightbox" id="lightbox"><img id="lightbox-img" alt=""></dialog>
+
+<script>
+  const ANGLES = [
+    ["alignxl-27-stat", "AlignXL — 27-stat"],
+    ["alignxl-instant-feedback", "AlignXL — instant feedback"],
+    ["best-dad-grandad", "Best dad / grandad"],
+    ["hard-to-buy-for", "Hard to buy for"],
+    ["last-minute-luxury", "Last-minute luxury"],
+    ["tournament-branding", "Tournament branding"],
+    ["vip-speed-personalization", "VIP speed personalization"],
+  ];
+
+  const SECTIONS = [
+    {
+      title: "Us vs Them — Positive",
+      subtitle: "Side-by-side framing where 'us' (golfballs) is the winning side.",
+      items: ANGLES.map(([slug, label]) => ({
+        file: `images/${slug}__us-vs-them-positive_9x16.png`,
+        angle: label,
+      })),
+    },
+    {
+      title: "Us vs Them — Negative",
+      subtitle: "Side-by-side framing where 'them' (generic / boring gift) is the losing side.",
+      items: ANGLES.map(([slug, label]) => ({
+        file: `images/${slug}__us-vs-them-negative_9x16.png`,
+        angle: label,
+      })),
+    },
+    {
+      title: "UGC Whiteboard Villain",
+      subtitle: "UGC-style comparison with handwritten / whiteboard villain framing.",
+      items: ANGLES.map(([slug, label]) => ({
+        file: `images/${slug}__ugc-whiteboard-villain_9x16.png`,
+        angle: label,
+      })),
+    },
+    {
+      title: "Before / After comparisons",
+      subtitle: "Sad hand / dramatic side-by-side recreations from mar25.",
+      items: [
+        { file: "images/recreation-mar25-v1__beforeafter-comparison_9x16.png", angle: "v1" },
+        { file: "images/recreation-mar25-v2__beforeafter-comparison_9x16.png", angle: "v2" },
+        { file: "images/recreation-mar25-v3__beforeafter-comparison_9x16.png", angle: "v3" },
+      ],
+    },
+    {
+      title: "Flatlay villain agitation",
+      subtitle: "Sharpie-failure-stack flatlay villain variants.",
+      items: [
+        { file: "images/flatlay-product-grid-iteration-mar25__03_villain-agitation-sharpie-failure-stack_9x16.png", angle: "9x16" },
+        { file: "images/flatlay-product-grid-iteration-mar25__04_villain-agitation-sharpie-failure-stack_1x1.png", angle: "1x1" },
+      ],
+    },
+  ];
+
+  const main = document.getElementById("main");
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lightbox-img");
+  lb.addEventListener("click", () => lb.close());
+
+  let n = 0;
+  for (const section of SECTIONS) {
+    const header = document.createElement("div");
+    header.className = "section-header";
+    header.innerHTML = `<h2 class="section-title">${section.title}<span class="count">${section.items.length} images</span></h2><p class="section-subtitle">${section.subtitle}</p>`;
+    main.appendChild(header);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    main.appendChild(grid);
+
+    for (const item of section.items) {
+      n++;
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="num">#${n}</div>
+        <img src="${item.file}" alt="${item.angle}" loading="lazy">
+        <div class="meta"><b>${item.angle}</b><br>${item.file.split("/").pop()}</div>`;
+      card.querySelector("img").addEventListener("click", () => {
+        lbImg.src = item.file;
+        lb.showModal();
+      });
+      grid.appendChild(card);
+    }
+  }
+</script>
+</body>
+</html>
