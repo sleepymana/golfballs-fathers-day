@@ -82,6 +82,24 @@
   dialog.lightbox { border: none; padding: 0; background: rgba(0,0,0,0.92); max-width: 96vw; max-height: 96vh; }
   dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
   dialog.lightbox img { max-width: 92vw; max-height: 92vh; display: block; }
+  .overlay-final {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .overlay-final .overlay-option {
+    background: rgba(245, 158, 11, 0.08);
+    border-left: 3px solid var(--amber);
+    border-radius: 4px;
+    padding: 8px 10px;
+    font-size: 14px; line-height: 1.45;
+    color: var(--text);
+  }
+  .overlay-final .overlay-option-num {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--amber); font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .overlay-final .overlay-option-text { white-space: pre-wrap; }
 </style>
 </head>
 <body>
@@ -168,10 +186,9 @@ And he loves it.`,
 
 A present that feels like I planned it out (they arrived in 2 days)
 
- Personalised golfballs are an obvious present now that I got them for him. Some people get a funny joke printed on, I just got "BEST DAD".
+Some people get a funny joke printed on, I just got "BEST DAD".
 
-And he loves it.
-`,
+And he loves it.`,
       headline: `Last-minute, not last-resort.`,
     },
     "010_last-minute-luxury__ugc-whiteboard-villain_9x16_4x5.png": {
@@ -236,6 +253,38 @@ And he loves it.`,
     },
   };
 
+  const OVERLAY = {
+    "01_father_daughter_hug_clubs_bg_4x5.png": [
+      "This year, get him something he’ll actually use\nPersonalized Golf Balls from Golfballs.com",
+    ],
+    "06_grandkids_climbing_grandad_4x5.png": [
+      "The golfer who has everything already has his favorite fans\nPersonalized Golf Balls from Golfballs.com",
+    ],
+    "v3_b3_woman_best_dad_mug_4x5.png": [
+      "If you're the one using his gift more than he is\nTry personalized golf balls from Golfballs.com",
+      "Another year, another mug he'll never use?\nGet him personalized golf balls instead!",
+    ],
+    "v3_a2_stressed_phone_kitchen_4x5.png": [
+      "Still scrolling for the perfect gift?\nPersonalized Golf Balls from Golfballs.com",
+    ],
+    "02_stressed_woman_phone_last_minute_4x5.png": [
+      "Father's Day is soon and you're still searching?\nPersonalized Golf Balls from Golfballs.com",
+    ],
+    "042_hard-to-buy-for__ugc-whiteboard-villain_9x16_4x5.png": [
+      "Stop buying him the same shirts and socks every year\nGet him personalized golf balls from Golfballs.com",
+    ],
+    "v3_c2_older_white_man_70s_best_dad_ball_4x5.png": [
+      "His reaction says it all\nPersonalized Golf Balls from Golfballs.com",
+      "Want to see a smile like this on Father’s Day?\nBuy him personalized golf balls!",
+    ],
+    "v3_d2_doorstep_handoff_4x5.png": [
+      "Caught him just in time as he was heading to the course\nPersonalized Golf Balls are the perfect last-minute gift!",
+    ],
+    "010_last-minute-luxury__ugc-whiteboard-villain_9x16_4x5.png": [
+      "Skip the generic ties and gift cards this year\nPersonalized Golf Balls from Golfballs.com",
+    ],
+  };
+
   const SECTIONS = [
     {
       title: "Happy families",
@@ -267,24 +316,12 @@ And he loves it.`,
         { remote: true, url: "https://papaya-narwhal-f54b5d.netlify.app/010_last-minute-luxury__ugc-whiteboard-villain_9x16_4x5.png?v=1778632499" },
       ],
     },
-    {
-      title: "Previous \"designer\" ads — blanks for Alberto",
-      subtitle: "Golf balls removed via image-to-image edit. Clean canvas for Alberto to composite real product photos. Copy below matches the original #10–14.",
-      remote: true,
-      items: [
-        { remote: true, url: "../blanks/005_last-minute-luxury__annotated-lifestyle_9x16_4x5_NO-BALLS.png", label: "005_last-minute-luxury__annotated-lifestyle_9x16_4x5.png" },
-        { remote: true, url: "../blanks/033_hard-to-buy-for__studio-product-hero_9x16_4x5_NO-BALLS.png", label: "033_hard-to-buy-for__studio-product-hero_9x16_4x5.png" },
-        { remote: true, url: "../blanks/129_best-dad-grandad__studio-product-hero_9x16_4x5_NO-BALLS.png", label: "129_best-dad-grandad__studio-product-hero_9x16_4x5.png" },
-        { remote: true, url: "../blanks/132_best-dad-grandad__specific-pain-point_9x16_4x5_NO-BALLS.png", label: "132_best-dad-grandad__specific-pain-point_9x16_4x5.png" },
-        { remote: true, url: "../blanks/133_best-dad-grandad__annotated-lifestyle_9x16_4x5_NO-BALLS.png", label: "133_best-dad-grandad__annotated-lifestyle_9x16_4x5.png" },
-      ],
-    },
   ];
 
   function resolve(item, sectionRemote) {
-    if (typeof item === "string") return { path: item, remote: sectionRemote, note: null, label: null };
-    if (item.url) return { path: item.url, remote: item.remote, note: item.note || null, label: item.label || null };
-    return { path: item.path, remote: sectionRemote, note: item.note || null, label: item.label || null };
+    if (typeof item === "string") return { path: item, remote: sectionRemote, note: null };
+    if (item.url) return { path: item.url, remote: item.remote, note: item.note || null };
+    return { path: item.path, remote: sectionRemote, note: item.note || null };
   }
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]);
@@ -312,20 +349,27 @@ And he loves it.`,
       for (const rawItem of section.items) {
         n++;
         const num = n;
-        const { path: item, remote, note, label: overrideLabel } = resolve(rawItem, section.remote);
+        const { path: item, remote, note } = resolve(rawItem, section.remote);
         const src = remote ? item : "../images/" + item.split("/").pop();
-        const label = overrideLabel || item.split("/").pop().split("?")[0];
+        const label = item.split("/").pop().split("?")[0];
         const copy = COPY[label] || { primary_text: "", headline: "" };
+        const overlay = OVERLAY[label] || null;
 
         const card = document.createElement("div");
         card.className = "card";
         const noteHTML = note ? `<div class="card-note">Note: ${note}</div>` : "";
+        const overlayFieldHTML = overlay ? `
+            <div class="copy-field">
+              <div class="copy-label">On-image overlay text${overlay.length > 1 ? " — options" : ""}</div>
+              <div class="overlay-final">${overlay.map((s, i) => `<div class="overlay-option">${overlay.length > 1 ? `<span class="overlay-option-num">Option ${i + 1}</span>` : ""}<div class="overlay-option-text">${escapeHtml(s)}</div></div>`).join("")}</div>
+            </div>` : "";
         card.innerHTML = `
           <div class="num">#${num}</div>
           <img src="${src}" alt="${label}" loading="lazy">
           <div class="meta">${label}</div>
           ${noteHTML}
           <div class="copy">
+            ${overlayFieldHTML}
             <div class="copy-field">
               <div class="copy-label">Headline</div>
               <div class="copy-value">${escapeHtml(copy.headline)}</div>
