@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Golfballs — Father's Day Approved (Round 4)</title>
+<title>Golfballs — Father's Day Approved (Round 4 · Final Copy)</title>
 <style>
   :root {
     --bg: #0e0f12;
@@ -13,7 +13,6 @@
     --text: #e7e9ee;
     --muted: #8a93a4;
     --amber: #f59e0b;
-    --accent: #6ee7b7;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
@@ -23,21 +22,10 @@
     backdrop-filter: saturate(140%) blur(10px);
     border-bottom: 1px solid var(--border);
     padding: 14px 22px;
-    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
   }
-  h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: 0.2px; flex: 1; }
+  h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: 0.2px; }
   h1 small { color: var(--muted); font-weight: 400; margin-left: 8px; }
-  header .actions { display: flex; gap: 8px; }
-  header button {
-    background: var(--panel-2); color: var(--text);
-    border: 1px solid var(--border); border-radius: 8px;
-    padding: 6px 12px; font-size: 12px; font-weight: 600;
-    cursor: pointer; font-family: inherit;
-  }
-  header button:hover { border-color: var(--accent); color: var(--accent); }
-  header button.danger:hover { border-color: #f87171; color: #f87171; }
-  .status { font-size: 11px; color: var(--muted); margin-left: 8px; min-width: 90px; }
-  .status.saved { color: var(--accent); }
   main { padding: 22px; }
   .section-header { margin: 8px 0 18px; }
   .section-header:not(:first-child) { margin-top: 44px; }
@@ -77,28 +65,19 @@
     word-break: break-all; line-height: 1.4;
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   }
-  .copy { padding: 6px 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-  .copy-field { display: flex; flex-direction: column; gap: 2px; }
+  .copy { padding: 6px 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .copy-field { display: flex; flex-direction: column; gap: 3px; }
   .copy-label {
     font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--muted); font-weight: 600;
   }
   .copy-value {
-    font-size: 13px; line-height: 1.45; color: var(--text);
+    font-size: 13px; line-height: 1.5; color: var(--text);
     background: var(--panel-2);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 7px 9px;
-    outline: none;
+    padding: 8px 10px;
     white-space: pre-wrap;
-    min-height: 18px;
-    transition: border-color 0.12s ease;
-  }
-  .copy-value:hover { border-color: #3a3f4d; }
-  .copy-value:focus { border-color: var(--accent); background: #181c22; }
-  .copy-value:empty::before {
-    content: attr(data-placeholder);
-    color: #4a5161; font-style: italic;
   }
   dialog.lightbox { border: none; padding: 0; background: rgba(0,0,0,0.92); max-width: 96vw; max-height: 96vh; }
   dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
@@ -107,22 +86,13 @@
 </head>
 <body>
 <header>
-  <h1>Golfballs — Father's Day Approved <small>round 4 revisions</small></h1>
-  <span class="status" id="status">edits autosave</span>
-  <div class="actions">
-    <button id="copy-json">Copy JSON</button>
-    <button id="download-json">Download JSON</button>
-    <button id="reset" class="danger">Reset all edits</button>
-  </div>
+  <h1>Golfballs — Father's Day Approved <small>round 4 · final copy</small></h1>
 </header>
 <main id="main"></main>
 <dialog class="lightbox" id="lightbox"><img id="lightbox-img" alt=""></dialog>
 
 <script>
-  const STORAGE_KEY = "gb_r4_copy_edits_v1";
-
-  // Default copy keyed by image label (filename, no path).
-  const DEFAULT_COPY = {
+  const COPY = {
     "01_father_daughter_hug_clubs_bg_4x5.png": {
       primary_text: "Your dad doesn't want another tie for father's day.\n\n\nPersonalised golf balls are the perfect gift for a dad who loves golfs.\n\n\nYou can print a nice message, a picture of a funny memory, or an alignment line which helps to improve his game.\n\n\n\n\nBuy now, so you're not left looking for a last minute present. ",
       headline: "Father's Day",
@@ -231,63 +201,14 @@
     if (item.url) return { path: item.url, remote: item.remote, note: item.note || null };
     return { path: item.path, remote: sectionRemote, note: item.note || null };
   }
-
-  function loadEdits() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"); }
-    catch { return {}; }
-  }
-  function saveEdits(edits) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(edits));
-  }
-  let EDITS = loadEdits();
-
-  function getCopy(label) {
-    const base = DEFAULT_COPY[label] || { primary_text: "", headline: "" };
-    const override = EDITS[label] || {};
-    return {
-      primary_text: override.primary_text ?? base.primary_text,
-      headline: override.headline ?? base.headline,
-    };
-  }
-
-  function setStatus(text, saved) {
-    const el = document.getElementById("status");
-    el.textContent = text;
-    el.classList.toggle("saved", !!saved);
-  }
-  let statusTimer = null;
-  function flashSaved() {
-    setStatus("saved ✓", true);
-    clearTimeout(statusTimer);
-    statusTimer = setTimeout(() => setStatus("edits autosave", false), 1200);
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]);
   }
 
   const main = document.getElementById("main");
   const lb = document.getElementById("lightbox");
   const lbImg = document.getElementById("lightbox-img");
   lb.addEventListener("click", () => lb.close());
-
-  function renderCopy(label) {
-    const c = getCopy(label);
-    const fields = [
-      ["primary_text", "Primary text"],
-      ["headline", "Headline"],
-    ];
-    return `<div class="copy">
-      ${fields.map(([key, lbl]) => `
-        <div class="copy-field">
-          <div class="copy-label">${lbl}</div>
-          <div class="copy-value" contenteditable="true" spellcheck="true"
-               data-label="${label}" data-key="${key}"
-               data-placeholder="Add ${lbl.toLowerCase()}…">${escapeHtml(c[key] || "")}</div>
-        </div>
-      `).join("")}
-    </div>`;
-  }
-
-  function escapeHtml(s) {
-    return String(s).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]);
-  }
 
   function render() {
     main.innerHTML = "";
@@ -307,8 +228,9 @@
         n++;
         const num = n;
         const { path: item, remote, note } = resolve(rawItem, section.remote);
-        const src = remote ? item : "images/" + item.split("/").pop();
+        const src = remote ? item : "../images/" + item.split("/").pop();
         const label = item.split("/").pop().split("?")[0];
+        const copy = COPY[label] || { primary_text: "", headline: "" };
 
         const card = document.createElement("div");
         card.className = "card";
@@ -318,7 +240,16 @@
           <img src="${src}" alt="${label}" loading="lazy">
           <div class="meta">${label}</div>
           ${noteHTML}
-          ${renderCopy(label)}`;
+          <div class="copy">
+            <div class="copy-field">
+              <div class="copy-label">Headline</div>
+              <div class="copy-value">${escapeHtml(copy.headline)}</div>
+            </div>
+            <div class="copy-field">
+              <div class="copy-label">Primary text</div>
+              <div class="copy-value">${escapeHtml(copy.primary_text)}</div>
+            </div>
+          </div>`;
         card.querySelector("img").addEventListener("click", () => {
           lbImg.src = src;
           lb.showModal();
@@ -326,71 +257,7 @@
         grid.appendChild(card);
       }
     }
-
-    main.querySelectorAll(".copy-value").forEach(el => {
-      el.addEventListener("input", () => {
-        const label = el.dataset.label;
-        const key = el.dataset.key;
-        const value = el.innerText;
-        if (!EDITS[label]) EDITS[label] = {};
-        EDITS[label][key] = value;
-        saveEdits(EDITS);
-        flashSaved();
-      });
-      el.addEventListener("paste", e => {
-        e.preventDefault();
-        const text = (e.clipboardData || window.clipboardData).getData("text/plain");
-        document.execCommand("insertText", false, text);
-      });
-    });
   }
-
-  function exportPayload() {
-    const out = {};
-    let n = 0;
-    for (const section of SECTIONS) {
-      for (const rawItem of section.items) {
-        n++;
-        const { path: item } = resolve(rawItem, section.remote);
-        const label = item.split("/").pop().split("?")[0];
-        out[label] = { num: n, section: section.title, ...getCopy(label) };
-      }
-    }
-    return out;
-  }
-
-  document.getElementById("copy-json").addEventListener("click", async () => {
-    const text = JSON.stringify(exportPayload(), null, 2);
-    try {
-      await navigator.clipboard.writeText(text);
-      setStatus("JSON copied ✓", true);
-      setTimeout(() => setStatus("edits autosave", false), 1500);
-    } catch {
-      setStatus("copy failed — use download", false);
-    }
-  });
-
-  document.getElementById("download-json").addEventListener("click", () => {
-    const text = JSON.stringify(exportPayload(), null, 2);
-    const blob = new Blob([text], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "golfballs_r4_copy.json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
-
-  document.getElementById("reset").addEventListener("click", () => {
-    if (!confirm("Reset all copy edits back to defaults? This cannot be undone.")) return;
-    EDITS = {};
-    saveEdits(EDITS);
-    render();
-    setStatus("reset to defaults", false);
-  });
-
   render();
 </script>
 </body>
