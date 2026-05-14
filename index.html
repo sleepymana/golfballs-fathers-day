@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Golfballs — Father's Day Approved (Round 4)</title>
+<style>
+  :root {
+    --bg: #0e0f12;
+    --panel: #16181d;
+    --panel-2: #1c1f26;
+    --border: #2a2e38;
+    --text: #e7e9ee;
+    --muted: #8a93a4;
+    --amber: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(14,15,18,0.92);
+    backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 22px;
+    display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+  }
+  h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: 0.2px; }
+  h1 small { color: var(--muted); font-weight: 400; margin-left: 8px; }
+  main { padding: 22px; }
+  .section-header { margin: 8px 0 18px; }
+  .section-header:not(:first-child) { margin-top: 44px; }
+  .section-title { font-size: 26px; color: var(--text); letter-spacing: -0.2px; font-weight: 700; margin: 0 0 6px; }
+  .section-title .count { color: var(--muted); font-weight: 400; font-size: 14px; margin-left: 10px; letter-spacing: 0; }
+  .section-subtitle { font-size: 15px; color: var(--muted); line-height: 1.5; margin: 0; max-width: 760px; }
+  .card-note {
+    padding: 0 12px 10px;
+    font-size: 12px; color: var(--amber);
+    line-height: 1.4;
+    font-style: italic;
+  }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .card .num {
+    position: absolute; top: 10px; left: 10px;
+    background: rgba(0,0,0,0.78); color: #fff;
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 13px; font-weight: 700;
+    padding: 4px 9px; border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    z-index: 2;
+    backdrop-filter: blur(4px);
+  }
+  .card img { width: 100%; height: auto; display: block; background: #000; cursor: zoom-in; }
+  .meta {
+    padding: 10px 12px 14px;
+    font-size: 12px; color: var(--muted);
+    word-break: break-all; line-height: 1.4;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  dialog.lightbox { border: none; padding: 0; background: rgba(0,0,0,0.92); max-width: 96vw; max-height: 96vh; }
+  dialog.lightbox::backdrop { background: rgba(0,0,0,0.85); }
+  dialog.lightbox img { max-width: 92vw; max-height: 92vh; display: block; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Golfballs — Father's Day Approved <small>round 4 revisions</small></h1>
+</header>
+<main id="main"></main>
+<dialog class="lightbox" id="lightbox"><img id="lightbox-img" alt=""></dialog>
+
+<script>
+  const SECTIONS = [
+    {
+      title: "Happy families",
+      subtitle: "Copy explains how the gift is for Father's Day.",
+      remote: false,
+      items: [
+        "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_implication_scenes_20260513/approved/01_father_daughter_hug_clubs_bg_4x5.png",
+        "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_implication_scenes_20260513/approved/06_grandkids_climbing_grandad_4x5.png",
+      ],
+    },
+    {
+      title: "Wife can't think of a good present",
+      subtitle: "Caption talks about the wife who ends up using the present more than him (the mug), or is panicking about not knowing what to get him.",
+      remote: false,
+      items: [
+        "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_gift_selfies_20260513/approved/v3_b3_woman_best_dad_mug_4x5.png",
+        "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_gift_selfies_20260513/approved/v3_a2_stressed_phone_kitchen_4x5.png",
+        "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_implication_scenes_20260513/4x5/02_stressed_woman_phone_last_minute_4x5.png",
+        { remote: true, url: "https://papaya-narwhal-f54b5d.netlify.app/042_hard-to-buy-for__ugc-whiteboard-villain_9x16_4x5.png?v=1778633727" },
+      ],
+    },
+    {
+      title: "Great present",
+      subtitle: "Copy explains how they're happy with it.",
+      remote: false,
+      items: [
+        "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_gift_selfies_20260513/approved/v3_c2_older_white_man_70s_best_dad_ball_4x5.png",
+        { path: "/Users/ryanetully/Developer/reframe-ops/06_clients/golfballs/outputs/ads/statics/native_gift_selfies_20260513/approved/v3_d2_doorstep_handoff_4x5.png", note: "Product should be blurred out by designer to create intrigue." },
+        { remote: true, url: "https://papaya-narwhal-f54b5d.netlify.app/010_last-minute-luxury__ugc-whiteboard-villain_9x16_4x5.png?v=1778632499" },
+      ],
+    },
+    {
+      title: "Previous \"designer\" ads",
+      subtitle: "Copy is self-explanatory — visual does most of the lifting.",
+      remote: true,
+      items: [
+        "https://papaya-narwhal-f54b5d.netlify.app/005_last-minute-luxury__annotated-lifestyle_9x16_4x5.png?v=1778658625",
+        "https://papaya-narwhal-f54b5d.netlify.app/033_hard-to-buy-for__studio-product-hero_9x16_4x5.png?v=1778632517",
+        "https://papaya-narwhal-f54b5d.netlify.app/129_best-dad-grandad__studio-product-hero_9x16_4x5.png?v=1778632499",
+        "https://papaya-narwhal-f54b5d.netlify.app/132_best-dad-grandad__specific-pain-point_9x16_4x5.png?v=1778651110",
+        "https://papaya-narwhal-f54b5d.netlify.app/133_best-dad-grandad__annotated-lifestyle_9x16_4x5.png?v=1778632499",
+      ],
+    },
+  ];
+  function resolve(item, sectionRemote) {
+    if (typeof item === "string") return { path: item, remote: sectionRemote, note: null };
+    if (item.url) return { path: item.url, remote: item.remote, note: item.note || null };
+    return { path: item.path, remote: sectionRemote, note: item.note || null };
+  }
+  const main = document.getElementById("main");
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lightbox-img");
+  lb.addEventListener("click", () => lb.close());
+
+  function render() {
+    main.innerHTML = "";
+    let n = 0;
+    for (const section of SECTIONS) {
+      const header = document.createElement("div");
+      header.className = "section-header";
+      const subtitleHTML = section.subtitle ? `<p class="section-subtitle">${section.subtitle}</p>` : "";
+      header.innerHTML = `<h2 class="section-title">${section.title}<span class="count">${section.items.length} images</span></h2>${subtitleHTML}`;
+      main.appendChild(header);
+
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      main.appendChild(grid);
+
+      for (const rawItem of section.items) {
+        n++;
+        const num = n;
+        const { path: item, remote, note } = resolve(rawItem, section.remote);
+        const src = remote ? item : "images/" + item.split("/").pop();
+        const label = item.split("/").pop().split("?")[0];
+
+        const card = document.createElement("div");
+        card.className = "card";
+        const noteHTML = note ? `<div class="card-note">Note: ${note}</div>` : "";
+        card.innerHTML = `
+          <div class="num">#${num}</div>
+          <img src="${src}" alt="${label}" loading="lazy">
+          <div class="meta">${label}</div>
+          ${noteHTML}`;
+        card.querySelector("img").addEventListener("click", () => {
+          lbImg.src = src;
+          lb.showModal();
+        });
+        grid.appendChild(card);
+      }
+    }
+  }
+  render();
+</script>
+</body>
+</html>
